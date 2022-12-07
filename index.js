@@ -1,8 +1,15 @@
 const app = require("express")()
 const dotenv = require("dotenv")
 const { router } = require("./router/urlShortenerRoter")
+const bodyParser = require("body-parser")
 
 dotenv.config()
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 app.use("/", router)
 
