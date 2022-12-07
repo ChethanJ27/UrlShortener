@@ -1,22 +1,19 @@
 const { Router } = require("express")
-const { getFullUrl } = require("../controller/UrlShortenerController")
+const { createRandomShortUrl, getLongUrl, createCustomShortUrl } = require("../controller/UrlShortenerController")
 const router = Router()
 
 router.get("/", async (req, res) => {
   console.log("recieved request")
-  getFullUrl(req, res)
-  //   console.log("rows", rows)
-  //   res.json(rows)
+  getLongUrl(req, res)
 })
 
 router.post("/", async (req, res) => {
-  console.log("recieved request")
-  res.sendStatus(200)
+  console.log(req.body);
+  createRandomShortUrl(req,res)
 })
 
-router.post("/custom-url", async (req, res) => {
-  console.log("recieved request")
-  res.sendStatus(200)
+router.post("/customurl/", async (req, res) => {
+  createCustomShortUrl(req,res)
 })
 
 module.exports = { router }
