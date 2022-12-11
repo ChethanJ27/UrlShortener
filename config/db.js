@@ -10,4 +10,13 @@ const pool = new Pool({
   port: process.env.PGPORT || "5432",
 })
 
-module.exports = { pool }
+
+module.exports.getConnectionAndQuery = async (query) => {
+  const { rows } = await pool.query(query)
+  return rows
+}
+
+module.exports.getClientForTransaction = async () => {
+  const client = pool.connect()
+  return client;
+}

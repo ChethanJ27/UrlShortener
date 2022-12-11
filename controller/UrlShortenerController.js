@@ -3,36 +3,64 @@ const {createShortUrl, getUrl, checkIfLongUrlExists}  = require("../Dao/UrlDao")
 const {express} = require("express")
 
 module.exports.createRandomShortUrl = async (req,res) => {
-    console.log(req.body);
-    const {longUrl} = req.body
-    const shortUrl = generateShortUrlId(longUrl)
-    const result = await createShortUrl(longUrl,shortUrl)
-    if (result == undefined || result == null) {
-        res.send(404).json(result)
+    try {
+        console.log(req.body);
+        const {longUrl} = req.body
+        if (longUrl == undefined || longUrl == null){
+            res.json({status:404,error:"Invalid request parameters"})
+            return
+        }
+        const shortUrl = generateShortUrlId(longUrl)
+        const result = await createShortUrl(longUrl,shortUrl)
+        if (result == undefined || result == null || result.length <=0) {
+            res.json({status:404,error:"No data found"})
+            return
+        }
+        res.json({status:201,data:result})
+    } catch (error) {
+        res.json({status:404,error})
     }
-    res.send(201).json(result)
 }
 
 module.exports.getLongUrl = async (req,res) => {
-    const {shortUrl} = req.query
-    const result = await getUrl(shortUrl)
-    if (result == undefined || result == null) {
-        res.send(404).json(result)
+    try {
+        const {shortUrl} = req.query
+        if (shortUrl == undefined || shortUrl == null){
+            res.json({status:404,error:"Invalid query parameter"})
+            return
+        }
+        const result = await getUrl(shortUrl)
+        if (result == undefined || result == null || result.length <=0) {
+            res.json({status:404,error:"No data found"})
+            return
+        }
+        res.json({status:201,data:result})
+    } catch (error) {
+        res.json({status:404,error})
     }
-    res.json(result.rows[0])
 }
 
 module.exports.createCustomShortUrl = async (req,res) => {
-    console.log(req.body);
-    const {longurl, shorturl} = req.body
-    const longUrlExists = await checkIfLongUrlExists(longurl)
-    if (longUrlExists != null && longUrlExists.rowCount != 0 ){
-        res.json(longUrlExists)
-    }else {
-        const result = await createShortUrl(longurl,shorturl)
-        if (result == undefined || result == null) {
-            res.send(404).json(result)
+    try {
+        console.log(req.body);
+        const {longurl, shorturl} = req.body
+        if (longUrl == undefined || longUrl == null || shorturl==undefined||shorturl==null){
+            res.json({status:404,error:"Invalid request parameters"})
+            return
         }
-        res.json(result)
+        const longUrlExists = await checkIfLongUrlExists(longurl)
+        if (longUrlExists != null && longUrlExists.length != 0 ){
+            res.json({status:201,data:longUrlExists})
+            return
+        }else {
+            const result = await createShortUrl(longurl,shorturl)
+            if (result == undefined || result == null || result.length <=0) {
+                res.json({status:404,error:"No data found"})
+                return
+            }
+            res.json({status:201,data:result})
+        }
+    } catch (error) {
+        res.json({status:404,error})
     }
 }
