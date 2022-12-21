@@ -2,6 +2,7 @@ const app = require("express")()
 const dotenv = require("dotenv")
 const { router } = require("./router/urlShortenerRoter")
 const bodyParser = require("body-parser")
+const {runScriptForBloomFilter} = require("./script")
 
 dotenv.config()
 
@@ -13,4 +14,9 @@ app.use(bodyParser.json())
 
 app.use("/", router)
 
-app.listen(8081, () => console.log("Server started listening to port 8081"))
+app.listen(8081, () => {
+    console.log("Server started listening to port 8081")
+    runScriptForBloomFilter()
+})
+
+
