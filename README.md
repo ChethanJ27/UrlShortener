@@ -1,6 +1,6 @@
 # UrlShortener
 Basic url shortener app in Node.js with Postgres as the database.
-  - Two post endpoints to create the custom shorturl and random shorturl.
+  - Two post endpoints to create the custom shorturl and random shorturl and a get end point to get the longurl or the original url.
   - Wrote a basic Hash function from scratch to create a random url.
   - Created a BloomFilter from scratch with two hash functions to avoid unnecessary db calls.
 
