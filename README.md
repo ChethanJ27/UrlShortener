@@ -1,8 +1,8 @@
 # UrlShortener
 Basic url shortener app in Node.js with Postgres as the database.
-  - Two post endpoints to create the custom shorturl and random shorturl and a get end point to get the longurl or the original url.
+  - Provides three APIs - one to generate short URLs based on user-specified inputs, one to generate random short URLs, and one to retrieve the original long URL associated with a short URL.
   - Wrote a basic Hash function from scratch to create a random url.
-  - Created a BloomFilter from scratch with two hash functions to avoid unnecessary db calls.
+  - Implemented a bloom filter to reduce database queries, improving performance and reducing resource usage.
 
 LIMITATIONS:
   - BloomFilter is stored in RAM, Eventually has to move it to a WAL or Db or some other persistent place.
